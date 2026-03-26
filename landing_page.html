@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>statball.kr — 해외축구 데이터 뉴스레터</title>
+  <meta name="description" content="눈으로 보는 해외축구 데이터. 매주 EPL·UCL 핵심 지표를 인포그래픽으로 받아보세요." />
+
+  <!-- =============================================
+    ★ GTM HEAD 스니펫 — 나중에 여기에 붙여넣기
+    GTM 계정 만든 뒤 아래 주석 지우고 실제 코드로 교체
+  ================================================
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  ============================================= -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Design Tokens ─────────────────────────── */
+    :root {
+      --bg:        #080d0f;
+      --surface:   #0f1820;
+      --border:    #1e2d38;
+      --accent:    #00e07f;   /* stadium green */
+      --accent2:   #f5c842;   /* highlight amber */
+      --text:      #e8edf0;
+      --muted:     #6b8a99;
+      --card:      #111c24;
+
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Noto Sans KR', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+    }
+
+    /* ─── Reset ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Noise overlay ──────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ─── Layout ─────────────────────────────────── */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative; z-index: 1;
+    }
+
+    /* ─── Header / Nav ───────────────────────────── */
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative; z-index: 10;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--muted); }
+    .nav-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ─── Hero ───────────────────────────────────── */
+    .hero {
+      padding: 80px 0 64px;
+      position: relative;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 10vw, 96px);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .hero-title em {
+      color: var(--accent);
+      font-style: normal;
+    }
+    .hero-title .line2 {
+      color: var(--muted);
+    }
+
+    .hero-sub {
+      margin-top: 28px;
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+
+    /* ─── Stat Pills ─────────────────────────────── */
+    .stat-pills {
+      display: flex;
+      gap: 12px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      background: var(--surface);
+    }
+    .pill .num {
+      color: var(--accent2);
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    /* ─── CTA Block ──────────────────────────────── */
+    .cta-block {
+      margin-top: 56px;
+      padding: 36px 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-block::after {
+      content: 'SUBSCRIBE';
+      position: absolute;
+      right: -10px; top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-family: var(--font-display);
+      font-size: 72px;
+      color: var(--border);
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+    .cta-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .cta-headline {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 24px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 14px 32px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.15s, transform 0.15s;
+      text-decoration: none;
+    }
+    .cta-btn:hover {
+      background: #00ff92;
+      transform: translateY(-2px);
+    }
+    .cta-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ─── Content Preview ────────────────────────── */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .content-section { padding: 72px 0; }
+
+    .content-grid {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .content-card {
+      background: var(--card);
+      padding: 28px 24px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .content-card:hover { background: var(--surface); }
+
+    .card-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 12px;
+      transition: color 0.2s;
+    }
+    .content-card:hover .card-num { color: var(--accent); }
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .card-desc {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ─── Why Block ──────────────────────────────── */
+    .why-section { padding: 0 0 80px; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .why-item {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+    }
+    .why-icon {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .why-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .why-desc {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ─── Bottom CTA ─────────────────────────────── */
+    .bottom-cta {
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .bottom-cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 7vw, 64px);
+      line-height: 1.05;
+      margin-bottom: 28px;
+    }
+    .bottom-cta-title em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    /* ─── Footer ─────────────────────────────────── */
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 12px;
+    }
+    .footer-logo {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ─── Divider line decoration ────────────────── */
+    .data-line {
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--border) 60%, transparent 100%);
+      margin: 0 0 64px;
+      opacity: 0.5;
+    }
+
+    /* ─── Scroll fade-in ─────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Responsive ─────────────────────────────── */
+    @media (max-width: 540px) {
+      .cta-block { padding: 28px 20px; }
+      .cta-block::after { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =============================================
+    ★ GTM BODY 스니펫 — <body> 바로 아래에 위치
+    GTM 계정 만든 뒤 아래 주석 지우고 실제 코드로 교체
+  ================================================
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  ============================================= -->
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="logo">statball<span>.kr</span></div>
+        <div class="nav-tag">해외축구 데이터 뉴스레터</div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Data-Driven Football</div>
+      <h1 class="hero-title">
+        숫자로<br>
+        <em>읽는</em><br>
+        <span class="line2">축구</span>
+      </h1>
+      <p class="hero-sub">
+        EPL · UCL · 빅5리그의 핵심 지표를<br>
+        <strong>매주 인포그래픽</strong>으로 정리해 드립니다.<br>
+        데이터는 복잡하지 않아야 합니다.
+      </p>
+
+      <div class="stat-pills">
+        <div class="pill"><span class="num">EPL</span> 이적료 대비 성과</div>
+        <div class="pill"><span class="num">UCL</span> 전·후반 순위 변화</div>
+        <div class="pill"><span class="num">SET</span> 세트피스 vs 오픈플레이</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BLOCK -->
+  <div class="container">
+    <div class="cta-block fade-in">
+      <div class="cta-label">Free Newsletter</div>
+      <p class="cta-headline">
+        매주 한 번,<br>
+        놓친 축구 데이터를 받아보세요
+      </p>
+      <a
+        class="cta-btn"
+        href="https://maily.so/statball.kr"
+        target="_blank"
+        rel="noopener"
+        onclick="gtag_subscribe()"
+        id="btn-subscribe-hero"
+      >
+        무료 구독하기 →
+      </a>
+      <div class="cta-note">광고 없음 · 무료 · 언제든 취소 가능</div>
+    </div>
+  </div>
+
+  <!-- CONTENT SECTION -->
+  <section class="content-section">
+    <div class="container">
+      <div class="section-label fade-in">최근 콘텐츠</div>
+
+      <div class="content-grid fade-in">
+        <div class="content-card">
+          <div class="card-num">01</div>
+          <div class="card-tag">EPL · Transfer</div>
+          <div class="card-title">이적료 대비 성과 — 누가 가장 가성비인가</div>
+          <div class="card-desc">산점도로 보는 EPL 이적료 vs xG 공헌도. 가장 저평가된 선수는 누구일까요?</div>
+        </div>
+        <div class="content-card">
+          <div class="card-num">02</div>
+          <div class="card-tag">UCL · Trend</div>
+          <div class="card-title">UCL 25-26 8강 — 전반전 팀이 후반전에 무너지는 이유</div>
+          <div class="card-desc">범프차트로 시각화한 전반·후반 순위 역전. 데이터가 보여주는 체력 관리의 비밀.</div>
+        </div>
+        <div class="content-card">
+          <div class="card-num">03</div>
+          <div class="card-tag">EPL · Set Piece</div>
+          <div class="card-title">세트피스 득점이 많은 팀이 더 이기는가</div>
+          <div class="card-desc">세트피스 득점 비중 vs 오픈플레이. 3개의 그래프로 보는 전술적 함의.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY SECTION -->
+  <section class="why-section">
+    <div class="container">
+      <div class="section-label fade-in">왜 statball인가</div>
+      <div class="why-grid">
+        <div class="why-item fade-in">
+          <div class="why-icon">📊</div>
+          <div class="why-title">데이터 기반</div>
+          <div class="why-desc">WhoScored · FBref 공식 데이터. 감이 아닌 숫자로 설명합니다.</div>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-icon">👁️</div>
+          <div class="why-title">시각화 우선</div>
+          <div class="why-desc">산점도, 범프차트, 막대그래프로 한눈에 이해할 수 있게.</div>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-icon">📬</div>
+          <div class="why-title">매주 뉴스레터</div>
+          <div class="why-desc">SNS 피드에서 흘려보낸 데이터를 메일함에서 차분히 읽으세요.</div>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-icon">🆓</div>
+          <div class="why-title">완전 무료</div>
+          <div class="why-desc">광고 없이, 비용 없이. 언제든 한 번의 클릭으로 취소 가능.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="bottom-cta">
+    <div class="container">
+      <h2 class="bottom-cta-title fade-in">
+        다음 호는<br>
+        <em>무료</em>로<br>
+        메일함에서
+      </h2>
+      <a
+        class="cta-btn"
+        href="https://maily.so/statball.kr"
+        target="_blank"
+        rel="noopener"
+        onclick="gtag_subscribe()"
+        id="btn-subscribe-bottom"
+      >
+        뉴스레터 구독하기 →
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;width:100%">
+      <div class="footer-logo">© 2025 statball.kr</div>
+      <div class="footer-links">
+        <a href="https://www.instagram.com/statball.kr" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://maily.so/statball.kr" target="_blank" rel="noopener">Newsletter</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Scroll Fade-in ───────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ─── GTM 구독 이벤트 ──────────────────────────
+    // GTM/GA4 세팅 후 이 함수가 자동으로 이벤트를 전송합니다
+    function gtag_subscribe() {
+      if (typeof dataLayer !== 'undefined') {
+        dataLayer.push({
+          event: 'newsletter_subscribe_click',
+          event_category: 'CTA',
+          event_label: 'subscribe_button'
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

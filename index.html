@@ -162,7 +162,48 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       font-weight: 600;
       margin-right: 4px;
     }
-
+    
+    /* ─── Channel Icons (Hero) ──────────────────── */
+    .hero-channels {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .channels-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }    
+    .channel-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .channel-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .channel-icons a:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .channel-icons img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+    
     /* ─── CTA Block ──────────────────────────────── */
     .cta-block {
       margin-top: 56px;
@@ -427,6 +468,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="pill"><span class="num">UCL</span> 전·후반 순위 변화</div>
         <div class="pill"><span class="num">SET</span> 세트피스 vs 오픈플레이</div>
       </div>
+      <div class="hero-channels">
+        <span class="channels-label">Channels</span>
+        <div class="channel-icons">
+          <a href="https://www.youtube.com/@statball_kr" target="_blank" rel="noopener" aria-label="YouTube">
+            <img src="Youtube.png" alt="YouTube">
+          </a>
+          <a href="https://www.instagram.com/statball.kr" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="Insta.png" alt="Instagram">
+          </a>
+          <a href="https://www.tiktok.com/@statball_kr" target="_blank" rel="noopener" aria-label="TikTok">
+            <img src="Tiktok.png" alt="TikTok">
+          </a>
+          <a href="https://maily.so/statball.kr" target="_blank" rel="noopener" aria-label="Maily">
+            <img src="Maily.png" alt="Maily">
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -449,7 +507,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         메일리에서 무료 구독하기(30초) →
       </a>
       <div class="cta-note"> 클릭 시 메일리로 이동합니다. 이메일 인증까지 약 1분 소요</div>
-      </a>
       <div class="cta-note"> 광고 없음 · 무료 · 언제든 취소 가능</div>
       <div style="margin-top: 12px; text-align: center;">
   <p style="font-size: 13px; color: #888; margin-bottom: 6px;">
@@ -537,10 +594,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         메일리에서 무료 구독하기(30초) →
       </a>
       <div class="cta-note"> 클릭 시 메일리로 이동합니다. 이메일 인증까지 약 1분 소요</div>
-      </a>
       <div class="cta-note"> 광고 없음 · 무료 · 언제든 취소 가능</div>
     </div>
-  </div>
   </section>
 
   <!-- FOOTER -->

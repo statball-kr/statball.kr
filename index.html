@@ -24,8 +24,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       --bg:        #080d0f;
       --surface:   #0f1820;
       --border:    #1e2d38;
-      --accent:    #00e07f;   /* stadium green */
-      --accent2:   #f5c842;   /* highlight amber */
+      --accent:    #00e07f;
+      --accent2:   #f5c842;
       --text:      #e8edf0;
       --muted:     #6b8a99;
       --card:      #111c24;
@@ -35,7 +35,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       --font-mono:    'JetBrains Mono', monospace;
     }
 
-    /* ─── Reset ─────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -48,7 +47,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     a { color: inherit; text-decoration: none; }
 
-    /* ─── Noise overlay ──────────────────────────── */
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0;
@@ -56,7 +54,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       pointer-events: none;
     }
 
-    /* ─── Layout ─────────────────────────────────── */
     .container {
       max-width: 780px;
       margin: 0 auto;
@@ -64,7 +61,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       position: relative; z-index: 1;
     }
 
-    /* ─── Header / Nav ───────────────────────────── */
     header {
       padding: 20px 0;
       border-bottom: 1px solid var(--border);
@@ -92,7 +88,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border-radius: 2px;
     }
 
-    /* ─── Hero ───────────────────────────────────── */
     .hero {
       padding: 80px 0 64px;
       position: relative;
@@ -141,7 +136,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .hero-sub strong { color: var(--text); font-weight: 600; }
 
-    /* ─── Stat Pills ─────────────────────────────── */
     .stat-pills {
       display: flex;
       gap: 12px;
@@ -163,7 +157,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       margin-right: 4px;
     }
     
-    /* ─── Channel Icons (Hero) ──────────────────── */
     .hero-channels {
       margin-top: 32px;
       display: flex;
@@ -204,7 +197,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       object-fit: contain;
     }
     
-    /* ─── CTA Block ──────────────────────────────── */
+    /* ─── Hero CTA (메인: 풀버전 보기) ──────────── */
     .cta-block {
       margin-top: 56px;
       padding: 36px 32px;
@@ -215,7 +208,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       overflow: hidden;
     }
     .cta-block::after {
-      content: 'SUBSCRIBE';
+      content: 'READ';
       position: absolute;
       right: -10px; top: 50%;
       transform: translateY(-50%) rotate(90deg);
@@ -264,8 +257,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       color: var(--muted);
       font-family: var(--font-mono);
     }
+    .cta-subscribe-link {
+      margin-top: 18px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .cta-subscribe-link a {
+      color: var(--accent);
+      border-bottom: 1px dashed var(--accent);
+      padding-bottom: 1px;
+      transition: opacity 0.15s;
+    }
+    .cta-subscribe-link a:hover { opacity: 0.7; }
 
-    /* ─── Content Preview ────────────────────────── */
     .section-label {
       font-family: var(--font-mono);
       font-size: 11px;
@@ -297,6 +303,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       padding: 28px 24px;
       position: relative;
       transition: background 0.2s;
+      display: block;
+      cursor: pointer;
     }
     .content-card:hover { background: var(--surface); }
 
@@ -330,8 +338,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       line-height: 1.7;
       font-weight: 300;
     }
+    .card-arrow {
+      margin-top: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .content-card:hover .card-arrow { opacity: 1; }
 
-    /* ─── Why Block ──────────────────────────────── */
     .why-section { padding: 0 0 80px; }
     .why-grid {
       display: grid;
@@ -359,7 +377,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       line-height: 1.7;
     }
 
-    /* ─── Bottom CTA ─────────────────────────────── */
     .bottom-cta {
       padding: 80px 0;
       text-align: center;
@@ -376,7 +393,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       font-style: normal;
     }
 
-    /* ─── Footer ─────────────────────────────────── */
     footer {
       padding: 28px 0;
       border-top: 1px solid var(--border);
@@ -403,7 +419,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .footer-links a:hover { color: var(--accent); }
 
-    /* ─── Divider line decoration ────────────────── */
     .data-line {
       height: 1px;
       background: linear-gradient(90deg, var(--accent) 0%, var(--border) 60%, transparent 100%);
@@ -411,7 +426,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       opacity: 0.5;
     }
 
-    /* ─── Scroll fade-in ─────────────────────────── */
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
@@ -422,7 +436,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       transform: translateY(0);
     }
 
-    /* ─── Responsive ─────────────────────────────── */
     @media (max-width: 540px) {
       .cta-block { padding: 28px 20px; }
       .cta-block::after { display: none; }
@@ -464,9 +477,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </p>
 
       <div class="stat-pills">
-        <div class="pill"><span class="num">EPL</span> 이적료 대비 성과</div>
-        <div class="pill"><span class="num">UCL</span> 전·후반 순위 변화</div>
-        <div class="pill"><span class="num">SET</span> 세트피스 vs 오픈플레이</div>
+        <div class="pill"><span class="num">EPL</span> 하프타임 순위 변화</div>
+        <div class="pill"><span class="num">UCL</span> 4강 데이터</div>
+        <div class="pill"><span class="num">BIG5</span> 빅5리그 분석</div>
       </div>
       <div class="hero-channels">
         <span class="channels-label">Channels</span>
@@ -488,60 +501,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 
-  <!-- CTA BLOCK -->
+  <!-- HERO CTA: 풀버전 보기 (메인) -->
+  <!-- ⚠️ 운영 가이드: 새 글 발행 시 아래 href / cta-headline / onclick의 slug 3개만 업데이트 -->
   <div class="container">
     <div class="cta-block fade-in">
-      <div class="cta-label">Free Newsletter</div>
+      <div class="cta-label">Latest Analysis</div>
       <p class="cta-headline">
-        매주 한 번,<br>
-        놓친 축구 데이터를 받아보세요
+        EPL 하프타임 기준<br>
+        전반전 / 후반전 순위 차이는?
       </p>
       <a
         class="cta-btn"
-        href="https://maily.so/statball.kr"
+        href="https://maily.so/statball.kr/posts/8do72840rgq"
         target="_blank"
         rel="noopener"
-        onclick="gtag_subscribe()"
-        id="btn-subscribe-hero"
+        onclick="maily_post_click('halftime', 'hero')"
+        id="btn-content-full-hero"
       >
-        메일리에서 무료구독하고 풀버전 보기(30초) →
+        풀버전 분석 읽기 →
       </a>
-      <div class="cta-note"> 클릭 시 메일리로 이동합니다. 이메일 인증까지 약 1분 소요</div>
-      <div class="cta-note"> 광고 없음 · 무료 · 언제든 취소 가능</div>
-      <div style="margin-top: 12px; text-align: center;">
-  <p style="font-size: 13px; color: #888; margin-bottom: 6px;">
-    ↓ 클릭 후 '구독하기' 버튼 클릭 시 화면
-  </p>
-  <img src="maily-preview.jpg" 
-       alt="메일리 구독 페이지 미리보기" 
-       style="max-width: 240px; border-radius: 8px; border: 1px solid #333;">
-</div>
+      <div class="cta-note">광고 없음 · 회원가입 없이 바로 열람</div>
+      <div class="cta-subscribe-link">
+        매주 새 분석을 메일로 받으려면 <a href="https://maily.so/statball.kr" target="_blank" rel="noopener" onclick="newsletter_subscribe('hero_sublink')" id="btn-subscribe-hero-link">무료 구독 →</a>
+      </div>
     </div>
   </div>
-  <!-- CONTENT SECTION -->
+
+  <!-- CONTENT SECTION (각 카드에 메일리 글 직링) -->
   <section class="content-section">
     <div class="container">
-      <div class="section-label fade-in">최근 콘텐츠</div>
+      <div class="section-label fade-in">발행한 분석</div>
 
       <div class="content-grid fade-in">
-        <div class="content-card">
-          <div class="card-num">01</div>
-          <div class="card-tag">EPL · Transfer</div>
-          <div class="card-title">이적료 대비 성과 — 누가 가장 가성비인가</div>
-          <div class="card-desc">산점도로 보는 EPL 이적료 vs xG 공헌도. 가장 저평가된 선수는 누구일까요?</div>
-        </div>
-        <div class="content-card">
-          <div class="card-num">02</div>
-          <div class="card-tag">UCL · Trend</div>
-          <div class="card-title">UCL 25-26 8강 — 전반전 팀이 후반전에 무너지는 이유</div>
-          <div class="card-desc">범프차트로 시각화한 전반·후반 순위 역전. 데이터가 보여주는 체력 관리의 비밀.</div>
-        </div>
-        <div class="content-card">
+        <a href="https://maily.so/statball.kr/posts/8do72840rgq" target="_blank" rel="noopener" class="content-card" onclick="maily_post_click('halftime', 'card')">
+          <div class="card-num">04</div>
+          <div class="card-tag">EPL · Halftime</div>
+          <div class="card-title">하프타임 기준 전반전/후반전 순위 변화</div>
+          <div class="card-desc">전반에 잘하던 팀이 후반에 무너지는 패턴. 범프차트로 시각화한 EPL 순위 역전.</div>
+          <div class="card-arrow">READ →</div>
+        </a>
+        <a href="https://maily.so/statball.kr/posts/wdr9q7p9olx" target="_blank" rel="noopener" class="content-card" onclick="maily_post_click('ucl_olise_mendes', 'card')">
           <div class="card-num">03</div>
-          <div class="card-tag">EPL · Set Piece</div>
-          <div class="card-title">세트피스 득점이 많은 팀이 더 이기는가</div>
-          <div class="card-desc">세트피스 득점 비중 vs 오픈플레이. 3개의 그래프로 보는 전술적 함의.</div>
-        </div>
+          <div class="card-tag">UCL · 4강 2차전</div>
+          <div class="card-title">올리세 · 멘데스가 만든 UCL 4강 2차전</div>
+          <div class="card-desc">PSG vs Bayern 4강 2차전의 결정적 순간을 데이터로 재구성.</div>
+          <div class="card-arrow">READ →</div>
+        </a>
+        <a href="https://maily.so/statball.kr/posts/l1zqyv44r5x" target="_blank" rel="noopener" class="content-card" onclick="maily_post_click('vinicius', 'card')">
+          <div class="card-num">02</div>
+          <div class="card-tag">La Liga · 비니시우스</div>
+          <div class="card-title">비니시우스 시즌 통합 분석</div>
+          <div class="card-desc">레알 마드리드 핵심 자원의 시즌 퍼포먼스를 데이터로 정리.</div>
+          <div class="card-arrow">READ →</div>
+        </a>
+        <a href="https://maily.so/statball.kr/posts/knrj19j1rld" target="_blank" rel="noopener" class="content-card" onclick="maily_post_click('issue_01', 'card')">
+          <div class="card-num">01</div>
+          <div class="card-tag">Issue · PPDA</div>
+          <div class="card-title">창간호 — EPL 팀별 압박 강도(PPDA)</div>
+          <div class="card-desc">statball.kr이 어떤 데이터를 어떻게 다루는지 보여드리는 창간호.</div>
+          <div class="card-arrow">READ →</div>
+        </a>
       </div>
     </div>
   </section>
@@ -575,26 +594,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 
-  <!-- BOTTOM CTA -->
+  <!-- BOTTOM CTA: 구독 권유 (페이지 끝까지 본 사람 대상) -->
   <section class="bottom-cta">
     <div class="container">
       <h2 class="bottom-cta-title fade-in">
         다음 호는<br>
-        <em>무료</em>로<br>
-        메일함에서
+        <em>메일함</em>에서<br>
+        만나요
       </h2>
       <a
         class="cta-btn"
         href="https://maily.so/statball.kr"
         target="_blank"
         rel="noopener"
-        onclick="gtag_subscribe()"
+        onclick="newsletter_subscribe('bottom_cta')"
         id="btn-subscribe-bottom"
       >
-        메일리에서 무료구독하고 풀버전 보기(30초) →
+        매주 무료로 받기 →
       </a>
-      <div class="cta-note"> 클릭 시 메일리로 이동합니다. 이메일 인증까지 약 1분 소요</div>
-      <div class="cta-note"> 광고 없음 · 무료 · 언제든 취소 가능</div>
+      <div class="cta-note">광고 없음 · 언제든 1초 만에 취소 가능</div>
     </div>
   </section>
 
@@ -624,14 +642,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // ─── GTM 구독 이벤트 ──────────────────────────
-    // GTM/GA4 세팅 후 이 함수가 자동으로 이벤트를 전송합니다
-    function gtag_subscribe() {
+    // ─── GTM 이벤트: 파라미터 방식으로 통합 측정 ────
+    // 1. 메일리 글 클릭 (위치 무관 — 콘텐츠 단위 누적 측정)
+    //    파라미터:
+    //      post_slug: 어떤 글인지 (halftime, ucl_olise_mendes, vinicius, issue_01)
+    //      click_position: 어디서 클릭했는지 (hero, card)
+    function maily_post_click(slug, position) {
+      if (typeof dataLayer !== 'undefined') {
+        dataLayer.push({
+          event: 'maily_post_click',
+          post_slug: slug,
+          click_position: position
+        });
+      }
+    }
+
+    // 2. 뉴스레터 구독 클릭 (구독 의도만)
+    //    파라미터:
+    //      click_position: 어디서 클릭했는지 (hero_sublink, bottom_cta)
+    function newsletter_subscribe(position) {
       if (typeof dataLayer !== 'undefined') {
         dataLayer.push({
           event: 'newsletter_subscribe_click',
-          event_category: 'CTA',
-          event_label: 'subscribe_button'
+          click_position: position
         });
       }
     }
